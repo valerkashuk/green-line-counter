@@ -50,12 +50,12 @@ def _render_page_to_array(page: fitz.Page) -> np.ndarray:
     matrix = fitz.Matrix(RENDER_ZOOM, RENDER_ZOOM)
     pix = page.get_pixmap(matrix=matrix, alpha=False)
     img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
-    return np.asarray(img, dtype=np.int16)
+    return np.asarray(img, dtype=np.int32)
 
 
 def _green_mask(image: np.ndarray) -> np.ndarray:
     """Return a 2D boolean mask of pixels close to the reference green."""
-    ref = np.array(GREEN_REFERENCE_RGB, dtype=np.int16)
+    ref = np.array(GREEN_REFERENCE_RGB, dtype=np.int32)
     diff = image - ref
     distance_sq = np.sum(diff * diff, axis=2)
     return distance_sq <= GREEN_TOLERANCE ** 2
